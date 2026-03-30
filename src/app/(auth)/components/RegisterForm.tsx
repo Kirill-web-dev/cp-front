@@ -12,6 +12,8 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { authApi } from "@/lib/api/auth.api";
+import { redirect } from "next/navigation";
 
 const registerFormSchema = z.object({
   name: z.string("Поле обязательно к заполнению").min(1, "Поле обязательно к заполнению"),
@@ -48,12 +50,19 @@ export default function RegisterForm() {
   };
 
   const onSubmit = (data: registerSchemaType) => {
-    console.log(data);
+    authApi.register(data);
     setStep(2);
   };
 
-  const onSubmitOTP = () => {
-    console.log(OTP);
+  const onSubmitOTP = async () => {
+    const response = await authApi.verifyAccount(OTP!);
+    if (response.error) {
+      return 0;
+    } else {
+      setTimeout(() => {
+        redirect("/");
+      }, 3000);
+    }
   };
 
   return (
@@ -116,7 +125,9 @@ export default function RegisterForm() {
               );
             }}
           />
-          <Button variant={"outline"}>Продолжить</Button>
+          <Button variant={"outline"} className="bg-black text-white">
+            Продолжить
+          </Button>
         </form>
       )}
       {step === 2 && (

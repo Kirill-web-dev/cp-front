@@ -8,7 +8,7 @@ export default function RegisterPage() {
       backButtonHref="/a/login"
       backButtonText="Уже есть аккаунт?"
       backButtonTitle="Войти"
-      description="Присоединяйтесь к <span class='text-primary font-bold'>Live</span><span class='text-emerald-500'>Task</span> и начните управлять проектами вместе с командой без задержек."
+      description="Присоединяйтесь к <span class='text-black font-bold'>LiveTask</span> и начните управлять проектами вместе с командой без задержек."
       title="Создать аккаунт"
     >
       <RegisterForm />
