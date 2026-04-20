@@ -8,9 +8,22 @@ interface RegisterForm {
   password: string;
 }
 
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
 class AuthApi {
   public async register(body: RegisterForm) {
-    await api.post(`${API_URL}/auth/register`, body);
+    return await api.post(`${API_URL}/auth/register`, body);
+  }
+
+  public async login(body: LoginForm) {
+    return await api.post(`${API_URL}/auth/login`, body);
+  }
+
+  public async logout() {
+    return await api.get(`${API_URL}/auth/logout`);
   }
 
   public async verifyAccount(code: string) {

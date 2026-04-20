@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { cn } from "@/lib/cn";
+import { authApi } from "@/lib/api/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const loginFormSchema = z.object({
@@ -29,8 +31,14 @@ export default function LoginForm() {
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: loginSchemaType) => {
-    console.log(data);
+  const onSubmit = async (data: loginSchemaType) => {
+    const { data: response } = await authApi.login(data);
+
+    if (!response.success) {
+      return toast.error(response.message, { position: "top-center" });
+    }
+
+    redirect("/tasks");
   };
 
   return (
