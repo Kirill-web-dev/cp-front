@@ -9,9 +9,12 @@ import { Label } from "@/components/ui/label";
 import { Calendar1, Pen } from "lucide-react";
 import { useState } from "react";
 import { ru } from "date-fns/locale";
-import ResizableTextarea from "./ResizableTextarea";
 import { taskApi } from "@/lib/api/task.api";
 import { Task } from "@/lib/types";
+
+import dynamic from "next/dynamic";
+
+const MarkdownEditor = dynamic(() => import("@uiw/react-md-editor").then((mod) => mod.default), { ssr: false });
 
 interface CreateTaskProps {
   onTaskCreated: (task: Task) => void;
@@ -33,6 +36,7 @@ export default function CreateTask({ onTaskCreated }: CreateTaskProps) {
 
     setTitle("");
     setDescription("");
+    location.reload();
   };
 
   return (
@@ -55,7 +59,7 @@ export default function CreateTask({ onTaskCreated }: CreateTaskProps) {
             </Field>
             <Field>
               <Label htmlFor="description">Описание</Label>
-              <ResizableTextarea value={description} onChange={setDescription} />
+              <MarkdownEditor value={description} onChange={setDescription} preview="live" />
             </Field>
           </FieldGroup>
           <div>

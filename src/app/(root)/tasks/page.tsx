@@ -12,6 +12,7 @@ import { ru } from "date-fns/locale";
 import { Check, Heart, Pen, Trash } from "lucide-react";
 import { useUser } from "@/lib/hooks/use-user";
 import FindUsers from "./components/FindUsers";
+import MDEditor from "@uiw/react-md-editor";
 
 export default function TasksPage() {
   const { user } = useUser();
@@ -82,8 +83,6 @@ export default function TasksPage() {
     return;
   }
 
-  console.log(tasks);
-
   return (
     <div className="rounded-2xl shadow-2xl h-full dark:bg-accent relative transition-all duration-300 py-8 px-5">
       <div className="w-full h-full grid grid-cols-4 grid-rows-5 gap-y-5 gap-x-4">
@@ -139,11 +138,13 @@ export default function TasksPage() {
               </SheetTrigger>
               <SheetContent className="py-12 px-8 max-w-full overflow-y-scroll">
                 <SheetTitle className="text-center">{task.title}</SheetTitle>
-                <h1 className="text-xs text-gray-500 text-end">Задачу необходимо выполнить до {format(task.deadline, "dd LLLL", { locale: ru })}</h1>
-                <div className="custom-thumb overflow-x-hidden h-48">
-                  <SheetDescription className="whitespace-pre-line wrap-break-word">{task.description}</SheetDescription>
+                {task.deadline && <h1 className="text-xs text-gray-500 text-end">Задачу необходимо выполнить до {format(task.deadline, "dd LLLL", { locale: ru })}</h1>}
+                <div className="custom-thumb overflow-x-hidden h-64">
+                  <SheetDescription className="whitespace-pre-line wrap-break-word" asChild>
+                    <MDEditor.Markdown source={task.description} style={{ whiteSpace: "pre-wrap" }} />
+                  </SheetDescription>
                 </div>
-                <h1>Так же над задачей работают: </h1>
+                {task.taskAssistants.length > 0 && <h1>Так же над задачей работают: </h1>}
                 <div className="absolute bottom-6 right-1 flex gap-x-3">
                   <FindUsers taskId={task.id} />
                   <Button size={"icon"} asChild className="p-2">

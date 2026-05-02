@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" suppressHydrationWarning>
+    <html lang="ru" suppressHydrationWarning data-color-mode="light">
       <body className={`${inter.className} antialiased`}>
         <Providers>{children}</Providers>
         <Toaster />
